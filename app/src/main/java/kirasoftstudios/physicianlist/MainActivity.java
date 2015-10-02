@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit.Callback;
@@ -63,16 +65,55 @@ public class MainActivity extends ActionBarActivity {
 
     private void ShowBadText(String e)
     {
-        Toast.makeText(this, "Error: " + e, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Sorry. There Was An Error. Please Try Again", Toast.LENGTH_LONG).show();
 
     }
 
     private void ShowText()
     {
-        String p = physicians.get(0).getName();
-        Toast.makeText(this, p, Toast.LENGTH_LONG).show();
+
 
     }
+
+    //<summary>
+    //Sort by Doctors Name Alphabetically
+    //</summary>
+    private void SortByName()
+    {
+
+        Collections.sort(physicians, new Comparator<Physician>() {
+            @Override
+            public int compare(final Physician object1, final Physician object2) {
+                return object1.getName().compareTo(object2.getName());
+            }
+        } );
+    }
+
+    //<summary>
+    //Sort by Doctors Practice Alphabetically
+    //</summary>
+    private void SortByPractice()
+    {
+        Collections.sort(physicians, new Comparator<Physician>() {
+            @Override
+            public int compare(final Physician object1, final Physician object2) {
+                return object1.getSpecialty().compareTo(object2.getSpecialty());
+            }
+        } );
+    }
+
+    //<summary>
+    //Reverse Doctors List
+    //</summary>
+    private void ReverseOrder()
+    {
+        Collections.reverse(physicians);
+
+    }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
