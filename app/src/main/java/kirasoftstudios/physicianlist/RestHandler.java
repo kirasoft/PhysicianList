@@ -1,5 +1,7 @@
 package kirasoftstudios.physicianlist;
 
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.http.GET;
 
@@ -14,6 +16,6 @@ public interface RestHandler {
 
     //Get All Physicians
     @GET ("/android_challenge/physicians")
-    void getPhysicians(Callback<Physician> physicianCallback);
+    void getPhysicians(Callback<List<Physician>> physicianCallback);
 
 }
