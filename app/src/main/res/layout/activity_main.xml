@@ -7,9 +7,21 @@
     android:background="#ffff714d">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:background="#c5ffc8af"></LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:id="@+id/linear"
+        android:background="#c5ffc8af">
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/doctorsList"
+            android:layout_height="wrap_content"></ListView>
 
+    </LinearLayout>
 
+    <Button android:layout_below="@id/linear" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Sort by Practice" android:id="@+id/sortByPractice"/>
+    <Button android:layout_below="@id/sortByPractice" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Sort by Name" android:id="@+id/sortByName"/>
+    <Button android:layout_below="@id/sortByName" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="ReverseList" android:id="@+id/reverseList"/>
 </RelativeLayout>

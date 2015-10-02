@@ -4,6 +4,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +25,8 @@ public class MainActivity extends ActionBarActivity {
 
     //list of physicians
    List<Physician> physicians;
+    ListView listView;
+    Button sortByName, sortByPractice, reverseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,38 @@ public class MainActivity extends ActionBarActivity {
 
         //create new instance of physicians list
         physicians = new ArrayList<>();
+
+        //create new instance of listview to display in xml
+        listView = (ListView)findViewById(R.id.doctorsList);
+
+        //create new isntance of buttons
+        sortByName = (Button)findViewById(R.id.sortByName);
+        sortByPractice = (Button)findViewById(R.id.sortByPractice);
+        reverseList = (Button)findViewById(R.id.reverseList);
+
+        //sort by name clicked
+        sortByName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortByName();
+            }
+        });
+
+        //sort by practice clicked
+        sortByPractice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortByPractice();
+            }
+        });
+
+        //reverse list clicked
+        reverseList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReverseOrder();
+            }
+        });
 
         //set up rest adapter
         RestAdapter restAdapter = new RestAdapter.Builder()
@@ -39,14 +77,14 @@ public class MainActivity extends ActionBarActivity {
         RestHandler restHandler = restAdapter.create(RestHandler.class);
 
 
-
+        //retrive all physicians from url
         restHandler.getPhysicians(new Callback<List<Physician>>() {
 
 
             @Override
             public void success(List<Physician> physician, Response response) {
                 physicians = physician;
-                ShowText();
+                SortByName();
             }
 
             @Override
@@ -63,15 +101,36 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+
+    //there was an error nad the information could not be received
     private void ShowBadText(String e)
     {
         Toast.makeText(this, "Sorry. There Was An Error. Please Try Again", Toast.LENGTH_LONG).show();
 
     }
 
+
+    //<summary>
+    //Put all physicians into a listview and display
+    //</summary>
     private void ShowText()
     {
+        //create array form physicians list
+        List<String> physList = new ArrayList<String>();
+        for(Physician p : physicians)
+        {
+            physList.add(p.getName() + ", " + p.getSpecialty());
+        }
 
+        String[] fullPhys = physList.toArray(new String[physList.size()]);
+
+        //doctor array adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, fullPhys);
+
+
+        //hook adapter up to list view
+        listView.setAdapter(adapter);
 
     }
 
@@ -87,6 +146,9 @@ public class MainActivity extends ActionBarActivity {
                 return object1.getName().compareTo(object2.getName());
             }
         } );
+
+        ShowText();
+
     }
 
     //<summary>
@@ -100,6 +162,8 @@ public class MainActivity extends ActionBarActivity {
                 return object1.getSpecialty().compareTo(object2.getSpecialty());
             }
         } );
+
+        ShowText();
     }
 
     //<summary>
@@ -108,7 +172,7 @@ public class MainActivity extends ActionBarActivity {
     private void ReverseOrder()
     {
         Collections.reverse(physicians);
-
+        ShowText();
     }
 
 
